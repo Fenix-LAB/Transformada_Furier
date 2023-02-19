@@ -56,10 +56,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph_grafica1.addWidget(self.plt)
 
         # Creacion de la grafica 2
-        pg.setConfigOption('background', '#2c2c2c')
-        pg.setConfigOption('foreground', '#ffffff')
-        self.plt2 = pg.PlotWidget(title='Espectro de señal')
-        self.graph_grafica2.addWidget(self.plt2)
+        self.graph_spectrum = pg.PlotWidget(title = 'Spectrum')
+        self.graph_grafica2.addWidget(self.graph_spectrum)
+
 
         self.read_ports()
         self.s = 0
@@ -108,7 +107,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if self.s == 100:
             self.tFurier(self.y)
-            print("Transformsds")
             self.s = 0
 
         self.s = self.s + 1
@@ -126,11 +124,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         Ph_gk = np.angle(gk)
         Fs = (50) #Frecuencia de muestreo
         F = Fs*np.arange(0, 100//2)/100
+        #print(M_gk)
+        #self.plt2.clear()
+        #self.plt2.plot(F, M_gk)
 
-        self.plt2.clear()
-        #self.plt2.plot(F, M_gk, pen=pg.mkPen('#da0037', width=2))
-        self.plt2.BarGraphItem(x=F,  y=M_gk, width = 0.5, brush = '#da0037')
-        print("YA se grafico")
+        self.tf = self.graph_spectrum.plot(F, M_gk, symbol = 'o', color = '#da0037', pen = '#da0037', width = 2,
+                                           brush = 'g', symboLBrush = '#da0037', symboLPen = '#da0037', symboLSize = 10)
+        #self.graph_spectrum.hideAxis('left´)
 
     def showInfo(self):
         self.val_actual1.setText(str(self.dato1))
